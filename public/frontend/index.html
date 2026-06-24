@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Out in Tech Survey — Community Findings</title>
+<meta name="description" content="Anonymous, community-led research on the experiences of queer people in tech. Building safer pathways in." />
+
+<script src="assets/theme.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+</script>
+<link rel="stylesheet" href="assets/shared.css" />
+<script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="assets/header.js"></script>
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main x-data="homeData()" x-init="$nextTick(() => animate())" class="max-w-6xl mx-auto px-5 sm:px-8 pt-10 sm:pt-16">
+
+  <!-- Hero -->
+  <section class="grid lg:grid-cols-12 gap-10 items-end pb-12">
+    <div class="lg:col-span-8">
+      <div class="hero-eyebrow fade-in">
+        <span class="pulse"></span>
+        Live community research · Round 02 · 2026
+      </div>
+      <h1 class="font-display fade-in mt-5" style="font-size:clamp(2.4rem,5.4vw,4rem); font-weight:600; line-height:1.05; color:var(--ink)">
+        What we're learning about being
+        <span style="background:linear-gradient(90deg,var(--blue-strong),var(--pink-strong),var(--primary)); -webkit-background-clip:text; background-clip:text; color:transparent;">queer in tech.</span>
+      </h1>
+      <p class="fade-in mt-5 text-lg" style="color:var(--ink-2); max-width:62ch; line-height:1.55">
+        An anonymous, ongoing survey gathering the lived experiences of LGBTQIA+ people working in &mdash; or hoping to enter &mdash;
+        the technology industry. Every response helps us build something safer than what we found.
+      </p>
+      <div class="fade-in mt-7 flex flex-wrap gap-3">
+        <a href="survey.html" class="btn btn-primary">
+          Add your voice
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="about.html" class="btn btn-secondary">Why this exists</a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-4">
+      <div class="card p-6 fade-in" style="background:linear-gradient(160deg, rgba(166,211,242,.35), var(--surface) 60%, rgba(247,182,200,.35))">
+        <div class="text-xs font-semibold tracking-wider uppercase" style="color:var(--ink-2)">Snapshot</div>
+        <div class="font-display mt-3" style="font-size:3rem; font-weight:600; line-height:1; color:var(--ink)">
+          <span x-text="formatNum(animated.total)">0</span>
+        </div>
+        <div class="mt-2" style="color:var(--ink-2); font-weight:500">verified responses to date</div>
+        <div class="mt-5 flex items-center gap-2 flex-wrap">
+          <span class="chip chip-pink">42 countries</span>
+          <span class="chip chip-blue">Nepal featured</span>
+          <span class="chip chip-purple">100% anonymous</span>
+        </div>
+        <div class="mt-5 pt-5" style="border-top:1px dashed var(--line)">
+          <div class="flex items-center justify-between text-sm">
+            <span style="color:var(--ink-2)">Survey completion</span>
+            <span style="color:var(--ink); font-weight:600">87%</span>
+          </div>
+          <div class="progress-track mt-2"><div class="progress-fill" style="width:87%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Category 1: Participation ===== -->
+  <section class="pt-6">
+    <div class="cat-head">
+      <h3>Participation</h3>
+      <span class="meta">Who's contributing to this dataset</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="s in cats.participation" :key="s.label">
+        <div class="stat-card">
+          <div class="accent" :style="'background:' + s.accent"></div>
+          <div class="stat-num"><span x-text="formatNum(animated[s.key])">0</span><span x-text="s.suffix || ''" style="font-size:.55em; color:var(--muted); margin-left:4px"></span></div>
+          <div class="stat-label" x-text="s.label"></div>
+          <div class="stat-sub" x-text="s.sub"></div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- ===== Category 2: Employment ===== -->
+  <section class="pt-12">
+    <div class="cat-head">
+      <h3>Employment status</h3>
+      <span class="meta">Where respondents stand professionally</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="s in cats.employment" :key="s.label">
+        <div class="stat-card">
+          <div class="accent" :style="'background:' + s.accent"></div>
+          <div class="flex items-baseline gap-2">
+            <div class="stat-num"><span x-text="formatNum(animated[s.key])">0</span><span x-text="s.suffix || ''" style="font-size:.55em; color:var(--muted); margin-left:4px"></span></div>
+          </div>
+          <div class="stat-label" x-text="s.label"></div>
+          <div class="stat-sub" x-text="s.sub"></div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- ===== Category 3: Reported Hostility / Mistreatment ===== -->
+  <section class="pt-12">
+    <div class="cat-head">
+      <h3>Mistreatment reported</h3>
+      <span class="meta">Of respondents with past tech experience &mdash; multi-select</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="s in cats.hostility" :key="s.label">
+        <div class="stat-card">
+          <div class="accent" :style="'background:' + s.accent"></div>
+          <div class="stat-num"><span x-text="formatNum(animated[s.key])">0</span><span x-text="s.suffix || ''" style="font-size:.55em; color:var(--muted); margin-left:4px"></span></div>
+          <div class="stat-label" x-text="s.label"></div>
+          <div class="stat-sub" x-text="s.sub"></div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- ===== Category 4: Hesitance Barriers ===== -->
+  <section class="pt-12">
+    <div class="cat-head">
+      <h3>Barriers to entering tech</h3>
+      <span class="meta">Cited by people who haven't yet joined the industry</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="s in cats.barriers" :key="s.label">
+        <div class="stat-card">
+          <div class="accent" :style="'background:' + s.accent"></div>
+          <div class="stat-num"><span x-text="formatNum(animated[s.key])">0</span><span x-text="s.suffix || ''" style="font-size:.55em; color:var(--muted); margin-left:4px"></span></div>
+          <div class="stat-label" x-text="s.label"></div>
+          <div class="stat-sub" x-text="s.sub"></div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- ===== Category 5: Sentiment & Safety ===== -->
+  <section class="pt-12">
+    <div class="cat-head">
+      <h3>Sentiment &amp; safety</h3>
+      <span class="meta">How welcoming respondents found their environments</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="s in cats.sentiment" :key="s.label">
+        <div class="stat-card">
+          <div class="accent" :style="'background:' + s.accent"></div>
+          <div class="stat-num"><span x-text="formatVal(animated[s.key], s)">0</span><span x-text="s.suffix || ''" style="font-size:.55em; color:var(--muted); margin-left:4px"></span></div>
+          <div class="stat-label" x-text="s.label"></div>
+          <div class="stat-sub" x-text="s.sub"></div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- ===== Category 6: Support Requested ===== -->
+  <section class="pt-12">
+    <div class="cat-head">
+      <h3>Support most asked for</h3>
+      <span class="meta">What respondents say would help them succeed</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="s in cats.support" :key="s.label">
+        <div class="stat-card">
+          <div class="accent" :style="'background:' + s.accent"></div>
+          <div class="stat-num"><span x-text="formatNum(animated[s.key])">0</span><span x-text="s.suffix || ''" style="font-size:.55em; color:var(--muted); margin-left:4px"></span></div>
+          <div class="stat-label" x-text="s.label"></div>
+          <div class="stat-sub" x-text="s.sub"></div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- ===== Category 7: Tech areas of interest ===== -->
+  <section class="pt-12 pb-4">
+    <div class="cat-head">
+      <h3>Areas of tech interest</h3>
+      <span class="meta">Where respondents work or want to work</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <template x-for="s in cats.interest" :key="s.label">
+        <div class="stat-card">
+          <div class="accent" :style="'background:' + s.accent"></div>
+          <div class="stat-num"><span x-text="formatNum(animated[s.key])">0</span><span x-text="s.suffix || ''" style="font-size:.55em; color:var(--muted); margin-left:4px"></span></div>
+          <div class="stat-label" x-text="s.label"></div>
+          <div class="stat-sub" x-text="s.sub"></div>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="my-16">
+    <div class="card p-8 sm:p-12 grid md:grid-cols-3 gap-6 items-center" style="background:linear-gradient(120deg, rgba(166,211,242,.4), var(--surface) 50%, rgba(247,182,200,.4))">
+      <div class="md:col-span-2">
+        <h3 class="font-display" style="font-size:clamp(1.6rem,3vw,2.2rem); font-weight:600; color:var(--ink); letter-spacing:-0.02em; line-height:1.15">
+          The numbers above only matter because someone shared their story.
+        </h3>
+        <p class="mt-3" style="color:var(--ink-2); max-width:60ch">
+          Whether you're thriving in tech, hesitant to enter, or somewhere in between &mdash; your experience helps shape what queer-friendly tech looks like next.
+        </p>
+      </div>
+      <div class="flex md:justify-end">
+        <a href="survey.html" class="btn btn-primary" style="padding:.95rem 1.6rem; font-size:1rem">
+          Take the survey
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script>
+  QTS.renderHeader('home');
+  QTS.renderFooter();
+
+  function homeData() {
+    return {
+      cats: {
+        participation: [
+          { key: 'total',     label: 'Total responses',          sub: 'Since launch · Round 01 + 02', value: 2847, accent: 'var(--primary)' },
+          { key: 'countries', label: 'Countries represented',    sub: 'Nepal, India, US, UK, BR, NG, ID …', value: 42, accent: 'var(--blue-strong)' },
+          { key: 'nepal',     label: 'Responses from Nepal',     sub: 'Featured region',               value: 612, accent: 'var(--pink-strong)' },
+          { key: 'languages', label: 'Languages submitted in',   sub: 'English, Nepali, Hindi, ES …',   value: 9, accent: 'var(--accent)' }
+        ],
+        employment: [
+          { key: 'employed',     label: 'Currently employed in tech',  sub: 'Full-time, freelance, or contract', value: 1248, accent: 'var(--blue-strong)' },
+          { key: 'looking',      label: 'Looking for a tech role',     sub: 'Active job-seekers',                value: 743,  accent: 'var(--primary)' },
+          { key: 'students',     label: 'Students &amp; learners',     sub: 'Bootcamp, university, self-taught', value: 521,  accent: 'var(--pink-strong)' },
+          { key: 'leftIndustry', label: 'Left tech in past 3 yrs',     sub: 'Cited culture as a reason',         value: 187,  accent: 'var(--warn)' }
+        ],
+        hostility: [
+          { key: 'misgender', label: 'Faced misgendering or deadnaming', sub: 'In meetings, code reviews, or chat',  value: 64, suffix: '%', accent: 'var(--primary)' },
+          { key: 'slurs',     label: 'Heard slurs or hostile jokes',     sub: 'In office, Slack, or team channels',  value: 41, suffix: '%', accent: 'var(--warn)' },
+          { key: 'exclusion', label: 'Excluded from teams or events',    sub: 'Social or professional exclusion',    value: 38, suffix: '%', accent: 'var(--pink-strong)' },
+          { key: 'discrim',   label: 'Discrimination in hiring',         sub: 'In interviews, promo, or reviews',    value: 29, suffix: '%', accent: 'var(--accent)' }
+        ],
+        barriers: [
+          { key: 'feelUnsafe',   label: 'Worry about hostile culture',    sub: 'Top-cited barrier to joining',        value: 71, suffix: '%', accent: 'var(--primary)' },
+          { key: 'noRoleModels', label: 'Lack of visible queer leaders',  sub: 'Cited as discouraging',               value: 58, suffix: '%', accent: 'var(--blue-strong)' },
+          { key: 'broCulture',   label: 'Concern about bro-culture',      sub: 'Masculine-dominated environments',    value: 53, suffix: '%', accent: 'var(--pink-strong)' },
+          { key: 'outAtWork',    label: 'Unsure about being out at work', sub: 'Disclosure feels risky',              value: 47, suffix: '%', accent: 'var(--accent)' }
+        ],
+        sentiment: [
+          { key: 'safetyAvg', label: 'Avg. workplace safety score', sub: 'Out of 5 · respondents in tech', value: 2.8, decimals: 1, suffix: '/5', accent: 'var(--primary)' },
+          { key: 'wouldRefer', label: 'Would refer a queer friend',  sub: 'To their current workplace',     value: 39, suffix: '%', accent: 'var(--blue-strong)' },
+          { key: 'mentalHealth', label: 'Felt impact on mental health', sub: 'From workplace experiences',  value: 67, suffix: '%', accent: 'var(--warn)' },
+          { key: 'positiveExp', label: 'Reported a positive example', sub: 'Of an inclusive tech employer',  value: 31, suffix: '%', accent: 'var(--pink-strong)' }
+        ],
+        support: [
+          { key: 'mentor',     label: 'Want queer mentorship',           sub: '1:1 or cohort-based',           value: 78, suffix: '%', accent: 'var(--primary)' },
+          { key: 'erg',        label: 'Want queer-friendly ERGs',        sub: 'Employee resource groups',      value: 64, suffix: '%', accent: 'var(--pink-strong)' },
+          { key: 'antiHar',    label: 'Want clear anti-harassment',      sub: 'Reporting + accountability',    value: 81, suffix: '%', accent: 'var(--blue-strong)' },
+          { key: 'visibleLead',label: 'Want visible LGBTQ+ leaders',     sub: 'In senior &amp; exec roles',    value: 69, suffix: '%', accent: 'var(--accent)' }
+        ],
+        interest: [
+          { key: 'softwareDev', label: 'Software development',  sub: 'Largest interest area',     value: 41, suffix: '%', accent: 'var(--blue-strong)' },
+          { key: 'design',      label: 'UI/UX &amp; design',     sub: 'Product &amp; visual',     value: 24, suffix: '%', accent: 'var(--pink-strong)' },
+          { key: 'data',        label: 'Data, AI &amp; ML',      sub: 'Including analytics',       value: 22, suffix: '%', accent: 'var(--primary)' },
+          { key: 'security',    label: 'Cybersecurity',          sub: 'Privacy &amp; safety roles',value: 13, suffix: '%', accent: 'var(--accent)' }
+        ]
+      },
+      animated: {},
+      formatNum(v) {
+        if (v == null) return '0';
+        if (Number.isInteger(v)) return v.toLocaleString('en-US');
+        return v.toFixed(1);
+      },
+      formatVal(v, s) {
+        if (v == null) return '0';
+        if (s.decimals != null) return v.toFixed(s.decimals);
+        return this.formatNum(v);
+      },
+      animate() {
+        // Init all to 0
+        Object.keys(this.cats).forEach((catKey) => {
+          this.cats[catKey].forEach((s) => { this.animated[s.key] = 0; });
+        });
+        // Animate up
+        const dur = 1100;
+        const start = performance.now();
+        const all = Object.values(this.cats).flat();
+        const tick = (now) => {
+          const t = Math.min(1, (now - start) / dur);
+          const eased = 1 - Math.pow(1 - t, 3);
+          all.forEach((s) => {
+            const target = s.value;
+            this.animated[s.key] = (s.decimals != null)
+              ? +(target * eased).toFixed(s.decimals)
+              : Math.round(target * eased);
+          });
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    };
+  }
+</script>
+
+</body>
+</html>
