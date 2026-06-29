@@ -39,19 +39,21 @@
                     style="background:linear-gradient(160deg, rgba(166,211,242,.35), var(--surface) 60%, rgba(247,182,200,.35))">
                     <div class="text-xs font-semibold tracking-wider uppercase" style="color:var(--ink-2)">Snapshot</div>
                     <div class="font-display mt-3" style="font-size:3rem; font-weight:600; line-height:1; color:var(--ink)">
-                        2,847</div>
+                        {{ number_format($stats['total']) }}</div>
                     <div class="mt-2" style="color:var(--ink-2); font-weight:500">verified responses to date</div>
                     <div class="mt-5 flex items-center gap-2 flex-wrap">
-                        <span class="chip chip-pink">42 countries</span>
+                        <span class="chip chip-pink">{{ $stats['countries'] }} countries</span>
                         <span class="chip chip-blue">Nepal featured</span>
                         <span class="chip chip-purple">100% anonymous</span>
                     </div>
                     <div class="mt-5 pt-5" style="border-top:1px dashed var(--line)">
                         <div class="flex items-center justify-between text-sm">
                             <span style="color:var(--ink-2)">Survey completion</span>
+                            {{-- TODO: completion rate not tracked in survey_responses --}}
                             <span style="color:var(--ink); font-weight:600">87%</span>
                         </div>
                         <div class="progress-track mt-2">
+                            {{-- TODO: completion rate not tracked in survey_responses --}}
                             <div class="progress-fill" style="width:87%"></div>
                         </div>
                     </div>
@@ -68,24 +70,25 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="stat-card">
                     <div class="accent" style="background:var(--primary)"></div>
-                    <div class="stat-num">2,847</div>
+                    <div class="stat-num">{{ number_format($stats['total']) }}</div>
                     <div class="stat-label">Total responses</div>
                     <div class="stat-sub">Since launch · Round 01 + 02</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--blue-strong)"></div>
-                    <div class="stat-num">42</div>
+                    <div class="stat-num">{{ $stats['countries'] }}</div>
                     <div class="stat-label">Countries represented</div>
                     <div class="stat-sub">Nepal, India, US, UK, BR, NG, ID …</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--pink-strong)"></div>
-                    <div class="stat-num">612</div>
+                    <div class="stat-num">{{ number_format($stats['nepal_count']) }}</div>
                     <div class="stat-label">Responses from Nepal</div>
                     <div class="stat-sub">Featured region</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--accent)"></div>
+                    {{-- TODO: language count not tracked in survey_responses --}}
                     <div class="stat-num">9</div>
                     <div class="stat-label">Languages submitted in</div>
                     <div class="stat-sub">English, Nepali, Hindi, ES …</div>
@@ -102,25 +105,27 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="stat-card">
                     <div class="accent" style="background:var(--blue-strong)"></div>
-                    <div class="stat-num">1,248</div>
+                    <div class="stat-num">{{ number_format($stats['employment']['Employed in tech'] ?? 0) }}</div>
                     <div class="stat-label">Currently employed in tech</div>
                     <div class="stat-sub">Full-time, freelance, or contract</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--primary)"></div>
-                    <div class="stat-num">743</div>
+                    {{-- TODO: 'looking for a tech role' has no matching employment column value; nearest candidates are worked_in_tech='want_to_join' or employment='Unemployed' --}}
+                    <div class="stat-num">{{ number_format($stats['employment']['Unemployed'] ?? 0) }}</div>
                     <div class="stat-label">Looking for a tech role</div>
                     <div class="stat-sub">Active job-seekers</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--pink-strong)"></div>
-                    <div class="stat-num">521</div>
+                    <div class="stat-num">{{ number_format($stats['employment']['Student'] ?? 0) }}</div>
                     <div class="stat-label">Students &amp; learners</div>
                     <div class="stat-sub">Bootcamp, university, self-taught</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--warn)"></div>
-                    <div class="stat-num">187</div>
+                    {{-- TODO: 'left tech in past 3 yrs' not tracked in survey_responses --}}
+                    <div class="stat-num">0</div>
                     <div class="stat-label">Left tech in past 3 yrs</div>
                     <div class="stat-sub">Cited culture as a reason</div>
                 </div>
@@ -136,28 +141,29 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="stat-card">
                     <div class="accent" style="background:var(--primary)"></div>
-                    <div class="stat-num">64<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['hostility']['Verbal harassment (slurs, derogatory jokes, deadnaming, misgendering)']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Faced misgendering or deadnaming</div>
                     <div class="stat-sub">In meetings, code reviews, or chat</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--warn)"></div>
-                    <div class="stat-num">41<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    {{-- TODO: 'heard slurs/hostile jokes' and 'misgendering/deadnaming' are combined into one survey option; split requires a new survey question --}}
+                    <div class="stat-num">{{ $stats['hostility']['Verbal harassment (slurs, derogatory jokes, deadnaming, misgendering)']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Heard slurs or hostile jokes</div>
                     <div class="stat-sub">In office, Slack, or team channels</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--pink-strong)"></div>
-                    <div class="stat-num">38<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['hostility']['Exclusion from teams, meetings, or social events']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Excluded from teams or events</div>
                     <div class="stat-sub">Social or professional exclusion</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--accent)"></div>
-                    <div class="stat-num">29<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['hostility']['Discrimination in hiring, promotion, or reviews']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Discrimination in hiring</div>
                     <div class="stat-sub">In interviews, promo, or reviews</div>
@@ -174,28 +180,28 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="stat-card">
                     <div class="accent" style="background:var(--primary)"></div>
-                    <div class="stat-num">71<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['hesitance']['Fear of gender-based harassment or misgendering']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Worry about hostile culture</div>
                     <div class="stat-sub">Top-cited barrier to joining</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--blue-strong)"></div>
-                    <div class="stat-num">58<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['hesitance']['Lack of visible queer role models or inclusive companies']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Lack of visible queer leaders</div>
                     <div class="stat-sub">Cited as discouraging</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--pink-strong)"></div>
-                    <div class="stat-num">53<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['hesitance']['Concerns about bro-culture or masculine-dominated environments']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Concern about bro-culture</div>
                     <div class="stat-sub">Masculine-dominated environments</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--accent)"></div>
-                    <div class="stat-num">47<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['hesitance']['Uncertainty about coming out or being out at work']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Unsure about being out at work</div>
                     <div class="stat-sub">Disclosure feels risky</div>
@@ -212,28 +218,31 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="stat-card">
                     <div class="accent" style="background:var(--primary)"></div>
-                    <div class="stat-num">2.8<span style="font-size:.55em; color:var(--muted); margin-left:4px">/5</span>
+                    <div class="stat-num">{{ $stats['avg_safety'] }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">/5</span>
                     </div>
                     <div class="stat-label">Avg. workplace safety score</div>
                     <div class="stat-sub">Out of 5 · respondents in tech</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--blue-strong)"></div>
-                    <div class="stat-num">39<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    {{-- TODO: 'would refer a queer friend' not tracked in survey_responses --}}
+                    <div class="stat-num">0<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Would refer a queer friend</div>
                     <div class="stat-sub">To their current workplace</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--warn)"></div>
-                    <div class="stat-num">67<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    {{-- TODO: mental_health_impact is free text; add whereNotNull count to StatsService to compute this % --}}
+                    <div class="stat-num">0<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Felt impact on mental health</div>
                     <div class="stat-sub">From workplace experiences</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--pink-strong)"></div>
-                    <div class="stat-num">31<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    {{-- TODO: positive_examples is free text; add whereNotNull count to StatsService to compute this % --}}
+                    <div class="stat-num">0<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Reported a positive example</div>
                     <div class="stat-sub">Of an inclusive tech employer</div>
@@ -250,28 +259,28 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="stat-card">
                     <div class="accent" style="background:var(--primary)"></div>
-                    <div class="stat-num">78<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['would_help']['Mentorship programs for queer individuals']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Want queer mentorship</div>
                     <div class="stat-sub">1:1 or cohort-based</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--pink-strong)"></div>
-                    <div class="stat-num">64<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['would_help']['Queer-friendly employee resource groups (ERGs)']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Want queer-friendly ERGs</div>
                     <div class="stat-sub">Employee resource groups</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--blue-strong)"></div>
-                    <div class="stat-num">81<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['would_help']['Clear anti-harassment reporting mechanisms']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Want clear anti-harassment</div>
                     <div class="stat-sub">Reporting + accountability</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--accent)"></div>
-                    <div class="stat-num">69<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['would_help']['Visible LGBTQ+ representation in leadership']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Want visible LGBTQ+ leaders</div>
                     <div class="stat-sub">In senior &amp; exec roles</div>
@@ -288,28 +297,28 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="stat-card">
                     <div class="accent" style="background:var(--blue-strong)"></div>
-                    <div class="stat-num">41<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['tech_areas']['Software Development / Programming']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Software development</div>
                     <div class="stat-sub">Largest interest area</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--pink-strong)"></div>
-                    <div class="stat-num">24<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['tech_areas']['UI/UX or Graphic Design']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">UI/UX &amp; design</div>
                     <div class="stat-sub">Product &amp; visual</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--primary)"></div>
-                    <div class="stat-num">22<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['tech_areas']['Data Science / Analytics / AI / ML']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Data, AI &amp; ML</div>
                     <div class="stat-sub">Including analytics</div>
                 </div>
                 <div class="stat-card">
                     <div class="accent" style="background:var(--accent)"></div>
-                    <div class="stat-num">13<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
+                    <div class="stat-num">{{ $stats['tech_areas']['Cybersecurity']['pct'] ?? 0 }}<span style="font-size:.55em; color:var(--muted); margin-left:4px">%</span>
                     </div>
                     <div class="stat-label">Cybersecurity</div>
                     <div class="stat-sub">Privacy &amp; safety roles</div>
