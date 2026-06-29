@@ -35,6 +35,7 @@
     <nav class="sidebar-nav">
         <a href="{{ route('admin.dashboard') }}" @class(['active' => request()->routeIs('admin.dashboard')])>Dashboard</a>
         <a href="{{ route('admin.profile.edit') }}" @class(['active' => request()->routeIs('admin.profile.*')])>Profile</a>
+        <a href="{{ route('admin.surveys.index') }}" @class(['active' => request()->routeIs('admin.surveys.*')])>Surveys</a>
     </nav>
     <div class="sidebar-footer">
         <form method="POST" action="{{ route('admin.logout') }}">

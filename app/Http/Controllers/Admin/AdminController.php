@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\SurveyResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -17,6 +18,20 @@ class AdminController extends Controller
     public function editProfile(): View
     {
         return view('admin.profile', ['user' => auth()->user()]);
+    }
+
+    public function surveys(): View
+    {
+        $responses = SurveyResponse::latest()->paginate(20);
+
+        return view('admin.surveys.index', compact('responses'));
+    }
+
+    public function surveyShow(int $id): View
+    {
+        $response = SurveyResponse::findOrFail($id);
+
+        return view('admin.surveys.show', compact('response'));
     }
 
     public function updateProfile(Request $request): RedirectResponse

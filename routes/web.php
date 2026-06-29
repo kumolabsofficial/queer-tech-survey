@@ -30,4 +30,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [AdminController::class, 'editProfile'])->name('profile.edit');
     Route::patch('/profile', [AdminController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/surveys', [AdminController::class, 'surveys'])->name('surveys.index');
+    Route::get('/surveys/{id}', [AdminController::class, 'surveyShow'])->name('surveys.show');
 });
